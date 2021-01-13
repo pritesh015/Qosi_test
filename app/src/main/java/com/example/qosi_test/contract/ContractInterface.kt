@@ -7,7 +7,6 @@ import io.reactivex.Single
 
 interface ContractInterface {
     interface View {
-        fun initView()
         fun updateList(userList: List<ResponseUser>)
     }
 

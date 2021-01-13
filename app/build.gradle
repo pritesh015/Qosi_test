@@ -8,6 +8,8 @@ plugins {
 android {
     compileSdkVersion 30
 
+    viewBinding.enabled = true
+
     defaultConfig {
         applicationId "com.example.qosi_test"
         minSdkVersion 21
