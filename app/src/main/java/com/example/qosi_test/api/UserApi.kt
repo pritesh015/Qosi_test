@@ -1,6 +1,7 @@
 package com.example.qosi_test.api
 
 import com.example.qosi_test.Constants
+import com.example.qosi_test.models.ResponseUser
 import com.example.qosi_test.models.ResponseUserDetail
 import com.squareup.moshi.Moshi
 import io.reactivex.Single

@@ -13,6 +13,7 @@ import com.example.qosi_test.databinding.ItemUsersBinding
 import com.example.qosi_test.models.ResponseUser
 
 class MainActivityAdapter(val context: Context, var items: ArrayList<ResponseUser>): RecyclerView.Adapter<MainActivityAdapter.UserDetailHolder>() {
+    var listener: MainActivityAdapter.OnBottomReachedListener ?= null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserDetailHolder {
         return UserDetailHolder(
@@ -45,6 +46,10 @@ class MainActivityAdapter(val context: Context, var items: ArrayList<ResponseUse
             items.removeAt(currPosition)
             notifyItemRemoved(currPosition)
         }
+
+        if (position == items.size - 1) {
+            listener?.onBottomReached(position)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -54,6 +59,10 @@ class MainActivityAdapter(val context: Context, var items: ArrayList<ResponseUse
     fun setList(list: List<ResponseUser>) {
         items = list as ArrayList<ResponseUser>
         notifyDataSetChanged()
+    }
+
+    interface OnBottomReachedListener {
+        fun onBottomReached(position: Int)
     }
 
     class UserDetailHolder(view: View) : RecyclerView.ViewHolder(view) {

@@ -2,6 +2,7 @@ package com.example.qosi_test.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.qosi_test.R
@@ -26,9 +27,9 @@ class MainActivity : AppCompatActivity(), ContractInterface.View {
         
         presenter = MainActivityPresenter(this, this)
 
-        presenter!!.getUserList()
-
         setAdapter()
+        presenter!!.userListLoaded()
+        presenter!!.onError()
     }
 
     private fun setAdapter() {
@@ -36,10 +37,22 @@ class MainActivity : AppCompatActivity(), ContractInterface.View {
 
         binding.rvUser.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvUser.adapter = userDetailAdapter
+
+        presenter!!.getUserList()
+
+        userDetailAdapter.listener = object: MainActivityAdapter.OnBottomReachedListener {
+            override fun onBottomReached(position: Int) {
+                presenter!!.getNextUserList()
+            }
+        }
     }
 
     override fun updateList(userList: List<ResponseUser>) {
-        userDetailAdapter.setList(userList)
+        userDetailAdapter.setList(userList.distinctBy { it.name?.last })
+    }
+
+    override fun showError(error: String) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
     }
 
 }

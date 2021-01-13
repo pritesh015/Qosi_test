@@ -11,19 +11,26 @@ import io.reactivex.rxkotlin.subscribeBy
 class MainActivityModel: ContractInterface.Model {
 
     private val userApiServiceImpl = UserApiServiceImpl()
+    private val list: MutableList<ResponseUser> = mutableListOf()
     private var userList: MutableLiveData<List<ResponseUser>> = MutableLiveData()
     private var liveError: MutableLiveData<String> = MutableLiveData()
 
     private val results = 10
     private var paging = 1
-    private val lastPage = 3
+    private val lastPage = 5
 
     override fun getUserList() {
+        paging = 1
+        list.clear()
+
         userApiServiceImpl.getUser(results, paging)
             .run {
                 subscribeBy(
-                onSuccess = {
-                    userList.postValue(it.results)
+                onSuccess = { response ->
+                    response.map {
+                        list.add(it)
+                    }
+                    userList.postValue(list)
                 },
                 onError = {
                     liveError.postValue("Error on get user list")
@@ -31,7 +38,34 @@ class MainActivityModel: ContractInterface.Model {
             )}
     }
 
+    override fun getNextUserList() {
+        paging++
+
+        if (paging > lastPage) {
+            return
+        }
+
+        userApiServiceImpl.getUser(results, paging)
+            .run {
+                subscribeBy(
+                    onSuccess = { response ->
+                        response.map {
+                            list.add(it)
+                        }
+                        println(list.size)
+                        userList.postValue(list)
+                    },
+                    onError = {
+                        liveError.postValue("Error on get user list")
+                    }
+                )}
+    }
+
     override fun onUserListLoaded(): MutableLiveData<List<ResponseUser>> {
         return userList
+    }
+
+    override fun onErrorLoaded(): MutableLiveData<String> {
+        return liveError
     }
 }
