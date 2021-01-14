@@ -40,9 +40,24 @@ class MainActivity : AppCompatActivity(), ContractInterface.View {
 
         presenter!!.getUserList()
 
-        userDetailAdapter.listener = object: MainActivityAdapter.OnBottomReachedListener {
+        userDetailAdapter.listener = object: MainActivityAdapter.Listener {
             override fun onBottomReached(position: Int) {
                 presenter!!.getNextUserList()
+            }
+
+            override fun onItemClicked(position: Int) {
+                val userDialog = UserDetailDialog()
+                val user: ResponseUser = presenter!!.getUserDetail(position)
+                var name = user.name?.last
+                name = name.plus(" ")
+                name = name.plus(user.name?.first)
+
+                val args = Bundle()
+                args.putString("email", user.email)
+                args.putString("name", name)
+                args.putString("picture", user.picture?.largePicture)
+                userDialog.arguments = args
+                userDialog.show(supportFragmentManager, "UserDetailDialog")
             }
         }
     }

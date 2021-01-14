@@ -15,6 +15,7 @@ interface ContractInterface {
         fun getUserList()
         fun getNextUserList()
         fun userListLoaded()
+        fun getUserDetail(position: Int): ResponseUser
         fun onError()
     }
 
@@ -22,6 +23,7 @@ interface ContractInterface {
         fun getUserList()
         fun getNextUserList()
         fun onUserListLoaded(): MutableLiveData<List<ResponseUser>>
+        fun getUserDetail(position: Int): ResponseUser
         fun onErrorLoaded(): MutableLiveData<String>
     }
 }

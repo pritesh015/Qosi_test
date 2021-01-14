@@ -52,7 +52,6 @@ class MainActivityModel: ContractInterface.Model {
                         response.map {
                             list.add(it)
                         }
-                        println(list.size)
                         userList.postValue(list)
                     },
                     onError = {
@@ -63,6 +62,10 @@ class MainActivityModel: ContractInterface.Model {
 
     override fun onUserListLoaded(): MutableLiveData<List<ResponseUser>> {
         return userList
+    }
+
+    override fun getUserDetail(position: Int): ResponseUser {
+        return list[position]
     }
 
     override fun onErrorLoaded(): MutableLiveData<String> {

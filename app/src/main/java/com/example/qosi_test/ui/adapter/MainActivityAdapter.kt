@@ -1,6 +1,8 @@
 package com.example.qosi_test.ui.adapter
 
+import android.app.Activity
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +13,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.qosi_test.R
 import com.example.qosi_test.databinding.ItemUsersBinding
 import com.example.qosi_test.models.ResponseUser
+import com.example.qosi_test.ui.MainActivity
+import com.example.qosi_test.ui.UserDetailDialog
 
 class MainActivityAdapter(val context: Context, var items: ArrayList<ResponseUser>): RecyclerView.Adapter<MainActivityAdapter.UserDetailHolder>() {
-    var listener: MainActivityAdapter.OnBottomReachedListener ?= null
+    var listener: MainActivityAdapter.Listener ?= null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserDetailHolder {
         return UserDetailHolder(
@@ -50,6 +54,10 @@ class MainActivityAdapter(val context: Context, var items: ArrayList<ResponseUse
         if (position == items.size - 1) {
             listener?.onBottomReached(position)
         }
+
+        holder.binding.clUserItem.setOnClickListener {
+            listener?.onItemClicked(position)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -61,8 +69,9 @@ class MainActivityAdapter(val context: Context, var items: ArrayList<ResponseUse
         notifyDataSetChanged()
     }
 
-    interface OnBottomReachedListener {
+    interface Listener {
         fun onBottomReached(position: Int)
+        fun onItemClicked(position: Int)
     }
 
     class UserDetailHolder(view: View) : RecyclerView.ViewHolder(view) {

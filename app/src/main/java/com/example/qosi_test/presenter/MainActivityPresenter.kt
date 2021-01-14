@@ -25,6 +25,10 @@ class MainActivityPresenter(view: ContractInterface.View, owner: LifecycleOwner)
         })
     }
 
+    override fun getUserDetail(position: Int): ResponseUser {
+        return model.getUserDetail(position)
+    }
+
     override fun onError() {
         model.onErrorLoaded().observe(lifecycleOwner, {
             view.showError(it)
