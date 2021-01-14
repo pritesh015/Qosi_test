@@ -13,7 +13,11 @@ import com.example.qosi_test.presenter.MainActivityPresenter
 import com.example.qosi_test.ui.adapter.MainActivityAdapter
 
 class MainActivity : AppCompatActivity(), ContractInterface.View {
-    
+
+    //Pour avoir Firebase Analytics et Crashlytics, il faut enregistrer l'application "package name" dans firebase
+    //Ajouter les dépendance 'com.google.firebase:firebase-crashlytics' et 'com.google.firebase:firebase-analytics' dans build.gradle
+    //Ajout de FirebaseAnalytics dans la mainActivity
+
     private var presenter: MainActivityPresenter? = null
     private lateinit var userDetailAdapter: MainActivityAdapter
 

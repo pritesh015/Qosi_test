@@ -1,9 +1,7 @@
 package com.example.qosi_test.models
 
-import android.annotation.SuppressLint
-import androidx.lifecycle.LiveData
+
 import androidx.lifecycle.MutableLiveData
-import com.example.qosi_test.api.UserApiService
 import com.example.qosi_test.api.UserApiServiceImpl
 import com.example.qosi_test.contract.ContractInterface
 import io.reactivex.rxkotlin.subscribeBy
@@ -17,6 +15,8 @@ class MainActivityModel: ContractInterface.Model {
 
     private val results = 10
     private var paging = 1
+
+    //Paging max 5 page to avoid loop
     private val lastPage = 5
 
     override fun getUserList() {
